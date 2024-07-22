@@ -1,0 +1,13 @@
+.mainPlate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+    width: 100vw;
+    height: 100vh;
+}
+
+.mainButton {
+    width: 100px;
+    height: 100px;
+}
