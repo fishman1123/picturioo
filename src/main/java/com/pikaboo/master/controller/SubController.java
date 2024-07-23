@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
-public class MasterController {
-    @GetMapping("/main")
+@RequestMapping("/sub")
+public class SubController {
+    @GetMapping("/")
     public String masterMain() {
-        return "index";
+        return "subTest";
     }
+
 
 }
