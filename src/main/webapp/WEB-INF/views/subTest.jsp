@@ -18,10 +18,10 @@
     <title>Title</title>
 </head>
 <body>
-<div class="mainPlate" style="display: flex; justify-content: center; align-items: center; background-color: aqua; width: 100vw; height: 100vh">
+<div class="mainPlate" style="display: flex; justify-content: center; align-items: center; background-color: palegreen; width: 100vw; height: 100vh">
     <div>
         <button class="mainButton" onclick="hello()"></button>
-        <h1>This is SUUUUUP</h1>
+        <h1>IMAGE UPLOAD</h1>
     </div>
 </div>
 

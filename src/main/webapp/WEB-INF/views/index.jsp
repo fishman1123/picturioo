@@ -21,7 +21,7 @@
 <div class="mainPlate" style="display: flex; justify-content: center; align-items: center; background-color: aqua; width: 100vw; height: 100vh">
     <div>
         <button class="mainButton" onclick="hello()"></button>
-        <h1>what up?</h1>
+        <h1>THIS IS MAIN</h1>
     </div>
 </div>
 

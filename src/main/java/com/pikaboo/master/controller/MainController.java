@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class MainController {
+
+    @GetMapping
+    public String redirectToMain() {
+        return "redirect:/main";
+    }
     @GetMapping("/main")
     public String masterMain() {
         return "index";
