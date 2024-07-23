@@ -7,13 +7,15 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<link rel="stylesheet" type="text/css" href="/css/errorPage.css">
+
 <head>
     <title>Title</title>
 </head>
-<body>
+<body class="errorMainPage">
 <div>
-    <h1>Wrong path</h1>
-
+    <h1 style="color: white">Wrong path</h1>
+    <button style="background-color: darkblue" class="errorButton">뭐하세요?</button>
 </div>
 
 </body>

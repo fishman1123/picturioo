@@ -23,6 +23,14 @@
         <button class="mainButton" onclick="hello()"></button>
         <h1>THIS IS MAIN</h1>
     </div>
+    <!-- HTML !-->
+    <button class="defaultButton" role="button">눌러봐라</button>
+
+
+    <div style="margin-top: 300px" class="mainPageTemplate">YO</div>
+
+
+
 </div>
 
 </body>

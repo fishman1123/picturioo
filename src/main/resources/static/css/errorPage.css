@@ -1,0 +1,14 @@
+.errorMainPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+}
+.errorButton {
+    width: 100px;
+    height: 60px;
+    color: white;
+    font-size: 20px;
+}
