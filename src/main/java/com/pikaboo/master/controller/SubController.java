@@ -17,7 +17,7 @@ public class SubController {
 
     @GetMapping("/create")
     public String uploadMain() {
-        return "upload";
+        return "uploadPage";
     }
     @PostMapping("/create")
     public String uploadMainPost() {

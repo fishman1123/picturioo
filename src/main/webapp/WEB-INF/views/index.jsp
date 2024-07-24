@@ -8,8 +8,11 @@
 <script type="text/javascript">
     const hello = () => {
         console.log("ㅗㅗㅗㅗㅗㅗㅗㅗ");
-        document.getElementById("hey").innerText = "ㅗ";
+        document.getElementById("hey").innerText = "ㅎㅇㅌ";
     }
+
+
+
 </script>
 <head>
     <title>Title</title>
@@ -37,6 +40,8 @@
                 <h1>왜 안나옴?</h1>
             </c:if>
             <h1 id="hey"></h1>
+
+
 
         </div>
 

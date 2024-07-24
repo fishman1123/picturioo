@@ -1,8 +1,19 @@
+@import url('https://rsms.me/inter/inter.css');
+
 .mainPlate {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: aqua;
+    width: 100vw;
+    height: 100vh;
+}
+
+.uploadPlate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
     width: 100vw;
     height: 100vh;
 }
@@ -62,6 +73,42 @@
     width: 100px;
     height: 100px;
     background-color: lightpink;
+}
+
+.input {
+    position: relative;
+}
+
+.input__label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * .5);
+    margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * .5);
+    background: var(--color-background);
+    white-space: nowrap;
+    transform: translate(0, 0);
+    transform-origin: 0 0;
+    transition: transform 120ms ease-in;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.input__field {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    border: 3px solid currentColor;
+    padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+    color: currentColor;
+    background: transparent;
+    border-radius: var(--size-radius);
+}
+
+.input__field:focus + .input__label,
+.input__field:not(:placeholder-shown) + .input__label {
+    transform: translate(.25rem, -105%) scale(.8);
+    color: var(--color-signal);
 }
 
 
