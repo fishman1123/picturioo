@@ -14,8 +14,13 @@ public class SubController {
 
         return "errorPage";
     }
+
+    @GetMapping("/create")
+    public String uploadMain() {
+        return "upload";
+    }
     @PostMapping("/create")
-    public String masterMain() {
+    public String uploadMainPost() {
         return "subTest";
     }
 
