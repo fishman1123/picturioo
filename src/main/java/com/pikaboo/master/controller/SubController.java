@@ -14,7 +14,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/upload")
@@ -34,25 +37,46 @@ public class SubController {
         return "uploadPage";
     }
     @PostMapping("/create")
-    public String uploadMainPost(@RequestParam("targetImage") MultipartFile file, @RequestParam("userName") String name ) {
+    public String uploadMainPost(@RequestParam("targetImage") MultipartFile file,
+                                 @RequestParam("userName") String name) {
         System.out.println(file);
         System.out.println(name);
-        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/userGroup/" + name + "/";
+
+        // Generate current date in yyyyMMdd format
+        String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String uploadDir = System.getProperty("user.home") + "/Desktop/userGroup/" + name + "/";
         Path uploadPath = Paths.get(uploadDir);
 
         try {
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
-            String filePath = uploadDir + file.getOriginalFilename();
+
+            // Get original file name and add date before the extension
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = "";
+            String fileNameWithoutExtension = originalFileName;
+
+            int dotIndex = originalFileName.lastIndexOf(".");
+            if (dotIndex > 0 && dotIndex < originalFileName.length() - 1) {
+                fileExtension = originalFileName.substring(dotIndex);
+                fileNameWithoutExtension = originalFileName.substring(0, dotIndex);
+            }
+
+            // Create new file name with date
+            String newFileName = fileNameWithoutExtension + "_" + dateStr + fileExtension;
+            String filePath = uploadDir + newFileName;
             System.out.println(filePath);
             Path destination = Paths.get(filePath);
             file.transferTo(destination.toFile());
 
+            // Generate UUID for cache busting
+            String uuid = UUID.randomUUID().toString();
+
             ImageSet tempImageSet = new ImageSet();
             tempImageSet.setId("1");
             tempImageSet.setUserName(name);
-            tempImageSet.setImgUrl("/userGroup/" + name + "/uploads/" + file.getOriginalFilename());
+            tempImageSet.setImgUrl("/userGroup/" + name + "/" + newFileName + "?v=" + uuid);
             tempImageSet.setLikeStatus(0);
             tempImageSet.setPrivateCheck(false);
 
@@ -61,10 +85,7 @@ public class SubController {
             err.printStackTrace();
         }
 
-
-
-
-        return "redirect:/intro";
+        return "redirect:/main"; // Redirect to the main page
     }
 
 

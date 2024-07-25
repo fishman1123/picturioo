@@ -31,7 +31,6 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    @ResponseBody
     public String masterMain(Model model) {
         try {
 //            ImageSet imgSet = service.read(1);// 하나만 가지고 올 경우
