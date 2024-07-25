@@ -21,8 +21,14 @@ public class MainController {
 
     @GetMapping
     public String redirectToMain() {
-        return "redirect:/main";
+        return "redirect:/intro";
     }
+
+    @GetMapping("/intro")
+    public String introMain(Model model) {
+        return "introPage";
+    }
+
     @GetMapping("/main")
     public String masterMain(Model model) {
         try {
