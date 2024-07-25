@@ -1,6 +1,23 @@
 package com.pikaboo.master.dto;
 
 public class ImageSet {
+    private String id;
+    private String userName;
+    private String imgUrl;
+    private int likeStatus;
+    private boolean privateCheck;
+    public ImageSet() {
+
+    }
+    public ImageSet(String id, String userName, String imgUrl, int likeStatus, boolean privateCheck) {
+        super();
+        this.id = id;
+        this.userName = userName;
+        this.imgUrl = imgUrl;
+        this.likeStatus = likeStatus;
+        this.privateCheck = privateCheck;
+    }
+
     public String getId() {
         return id;
     }
@@ -33,27 +50,17 @@ public class ImageSet {
         this.likeStatus = likeStatus;
     }
 
-    public boolean isPrivateCheck() {
+    public boolean getPrivateCheck() {
         return privateCheck;
     }
+
 
     public void setPrivateCheck(boolean privateCheck) {
         this.privateCheck = privateCheck;
     }
 
-    private String id;
-    private String userName;
-    private String imgUrl;
-    private int likeStatus;
-    private boolean privateCheck;
 
-    public ImageSet(String id, String userName, String imgUrl, int likeStatus, boolean privateCheck) {
-        this.id = id;
-        this.userName = userName;
-        this.imgUrl = imgUrl;
-        this.likeStatus = likeStatus;
-        this.privateCheck = privateCheck;
-    }
+
 
     @Override
     public String toString() {

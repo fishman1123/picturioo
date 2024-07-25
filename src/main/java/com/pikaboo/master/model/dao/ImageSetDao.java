@@ -17,7 +17,9 @@ public interface ImageSetDao {
     @Delete("delete from imageMain where id=#{id}")
     public void delete(int id) throws SQLException;
 
-    @Select("select id, userName, imgUrl, likeStatus, privateCheck from imageSet where id=#{id}")
+    @Select("select id, userName, imgUrl, likeStatus, privateCheck from imageMain where id=#{id}")
     public ImageSet select(int id) throws SQLException;
 
+    @Select("SELECT id, userName, imgUrl, likeStatus, privateCheck FROM imageMain")
+    List<ImageSet> selectAll() throws SQLException;
 }

@@ -16,7 +16,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public int add(ImageSet imgSet) throws SQLException {
-        return 0;
+        return imageDao.insert(imgSet);
     }
 
     @Override
@@ -36,6 +36,6 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<ImageSet> readAll() throws SQLException {
-        return List.of();
+        return imageDao.selectAll();
     }
 }

@@ -24,22 +24,22 @@
 
     <div style=" height: 500px; width: 100%; margin-left: 100px; margin-right: 100px" class="mainPageTemplate">
         <h1>THIS IS MAIN</h1>
-        <button class="defaultButton" sty onclick="hello()" role="button">눌러봐라</button>
-<%--        <div style=" height: 100%; margin-top: 20px">--%>
-<%--            <div class="imageBlock">WOHHHHH</div>--%>
+        <button class="defaultButton" onclick="hello()" role="button">눌러봐라</button>
 
+        <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/upload/create'">Go to Main</button>
 
-
-<%--        </div>--%>
         <div style="margin-top: 50px">
             <h3>테스트</h3>
-            <c:if test="${imgSet != null}">
-                이름: ${imgSet.userName}
-            </c:if>
-            <c:if test="${imgSet == null}">
-                <h1>왜 안나옴?</h1>
-            </c:if>
-            <h1 id="hey"></h1>
+
+            <div>
+                <c:if test="${ !empty list }">
+                    <c:forEach items="${list }" var="image">
+                        <div style="height: 10px; width: 100px"><h1>${image.userName}</h1></div>
+                    </c:forEach>
+                </c:if>
+            </div>
+
+
 
 
 

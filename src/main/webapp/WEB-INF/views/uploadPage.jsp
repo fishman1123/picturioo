@@ -14,27 +14,21 @@
 <body>
 <div class="mainPlate uploadPlate">
     <div class="mainPageTemplate uploadPageTemplate">
-        <form id="imageForm" style="display: flex; flex-direction: column; align-items: center" method="post">
+        <form id="imageForm" style="display: flex; flex-direction: column; align-items: center" method="post" enctype="multipart/form-data">
             <div>
                 <div style="margin-top: 30px; text-align: center">
                     <h1>업로드 창입니다</h1>
                 </div>
                 <div class="fileUploadContainer">
                     <img id="imagePreview" src="/img/logo.png" alt="Logo" style="max-width: 250px; height: 160px; padding-bottom: 10px; cursor: pointer; margin: auto">
-                    <input type="file" id="imageInput" class="padded-input" accept="image/*" style="display: none;">
+                    <input type="file" id="imageInput" class="padded-input" accept="image/*" style="display: none;" name="targetImage">
                     <label for="imageInput" style="cursor: pointer;">이미지 선택</label>
                     <div class="file-status" id="fileStatus">No files have been selected</div>
                 </div>
                 <div id="container1" style="margin-top: 10px; height: 30px">
                     <label class="input">
-                        <input class="input__field" onclick="wohhh(this.nextElementSibling)" onblur="checkInput(this, this.nextElementSibling)" style="height: 100%" type="text" placeholder=" " />
+                        <input class="input__field" onclick="wohhh(this.nextElementSibling)" onblur="checkInput(this, this.nextElementSibling)" style="height: 100%" type="text" placeholder=" " name="userName" />
                         <span id="inputText1" class="input__label" style="top: 7px; left: 7px">이름 입력~</span>
-                    </label>
-                </div>
-                <div id="container2" style="margin-top: 30px; height: 30px">
-                    <label class="input">
-                        <input class="input__field" onclick="wohhh(this.nextElementSibling)" onblur="checkInput(this, this.nextElementSibling)" style="height: 100%" type="text" placeholder=" " />
-                        <span id="inputText2" class="input__label" style="top: 7px; left: 7px">뭐든 입력~</span>
                     </label>
                 </div>
             </div>
