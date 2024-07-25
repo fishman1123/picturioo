@@ -61,13 +61,13 @@
                         buttonElement.style.width = "auto";
                         buttonElement.style.height = "120px";
                         buttonElement.style.padding = "0";
-                        buttonElement.onclick = () => showModal();
 
                         const imgElement = document.createElement('img');
                         imgElement.src = image.imgUrl;  // Use the imgUrl directly
                         imgElement.alt = image.userName;
                         imgElement.style.width = '100%';
                         imgElement.style.height = '100%';
+                        buttonElement.onclick = () => showModal(imgElement);
                         container.appendChild(buttonElement);
                         buttonElement.appendChild(imgElement);
                     });
@@ -75,7 +75,8 @@
                 .catch(error => console.error('Error fetching images:', error));
         });
 
-        function showModal() {
+        function showModal(imageUrl) {
+            document.getElementById('modalImage').src = imageUrl.src;
             document.getElementById('modalOverlay').style.display = 'block';
         }
 
@@ -86,7 +87,7 @@
 </head>
 <body>
 <div class="mainPlate" style="display: flex; justify-content: center; align-items: center; background-color: aqua; width: 100vw; height: 100vh">
-    <div style="height: 500px; width: 100%; margin-left: 60px; margin-right: 60px" class="mainPageTemplate">
+    <div style="height: 90%; width: 100%; margin-left: 60px; margin-right: 60px" class="mainPageTemplate">
         <h1>THIS IS MAIN</h1>
         <button class="defaultButton" onclick="hello()" role="button">눌러봐라</button>
         <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/'">Go to Main</button>
@@ -102,7 +103,7 @@
         <div id="modalOverlay" class="modal-overlay">
             <div class="modal-container">
                 <div class="modal-header">
-                    <h2>Modal Title</h2>
+                    <img id="modalImage" src="" alt="Modal Image" style="width: 100%;">
                 </div>
                 <div class="modal-body">
                     <p>TEST</p>
