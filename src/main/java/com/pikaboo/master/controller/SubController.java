@@ -21,6 +21,7 @@ public class SubController {
     }
     @PostMapping("/create")
     public String uploadMainPost() {
+        System.out.println("moved to post");
         return "subTest";
     }
 
