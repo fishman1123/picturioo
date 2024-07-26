@@ -17,7 +17,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Darkish background */
+            background: rgba(0, 0, 0, 0.7);
             z-index: 1000; /* On top of other elements */
         }
 
@@ -26,9 +26,9 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
+            /*background: white;*/
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);*/
             z-index: 1001;
         }
 
@@ -39,19 +39,20 @@
         .modalBody {
             padding: 20px 0;
         }
-        #modalImage {
+
+        #modalImage img {
             max-height: 500px;
         }
-
-
     </style>
     <script type="text/javascript">
+        let editTrigger = false;
+        let originalModalContent = '';
+
         document.addEventListener('DOMContentLoaded', () => {
             fetch('/image/all')
                 .then(response => response.json())
                 .then(data => {
                     const container = document.getElementById("imageContainer");
-                    console.log(data);
                     data.forEach(image => {
                         const buttonElement = document.createElement('button');
                         buttonElement.classList.add("defaultButton");
@@ -72,21 +73,82 @@
                 .catch(error => console.error('Error fetching images:', error));
         });
 
-        const showModal = (imageUrl) => {
-            document.getElementById('modalImage').src = imageUrl.src;
+        const showModal = (imageElement) => {
+            const modalImage = document.getElementById('modalImage');
+            modalImage.innerHTML = '';
+            const img = document.createElement('img');
+            img.src = imageElement.src;
+            img.alt = imageElement.alt;
+            img.style.width = '100%';
+            modalImage.appendChild(img);
             document.getElementById('modalPage').style.display = 'block';
+
+            // Store original content for undo
+            originalModalContent = document.getElementById('imageContent').innerHTML;
+            editTrigger = false;  // Ensure edit mode is off initially
         }
+
         const closeModal = () => {
             document.getElementById('modalPage').style.display = 'none';
         }
+
         const editPageTransition = () => {
-            console.log("tome to edit");
+            const modalImage = document.querySelector('#modalImage img');
+            const editMainPlate = document.getElementById('imageContent');
+
+            if (editTrigger) {
+                // Undo the edit: restore original content
+                editMainPlate.innerHTML = originalModalContent;
+                editTrigger = false;
+            } else {
+                // Save original content before editing
+                originalModalContent = editMainPlate.innerHTML;
+
+                const editImageContainer = document.createElement('div');
+                editImageContainer.classList.add('fileUploadContainer');
+                editImageContainer.innerHTML = `
+                    <img id="imagePreview" src="" alt="Logo" style="width: 100%; padding-bottom: 10px; cursor: pointer; margin: auto"/>
+                    <input type="file" id="imageInput" class="padded-input" accept="image/*" style="display: none;" name="targetImage"/>
+                    <label for="imageInput" style="cursor: pointer;">이미지 선택</label>
+                    <button class="defaultButton" onclick="cancelEdit()">수정취소</button>
+                    <button class="defaultButton" onclick="">저장하기</button>
+                `;
+
+                editMainPlate.innerHTML = '';
+                editMainPlate.appendChild(editImageContainer);
+
+                // Set image preview src to modal image src
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = modalImage.src;
+
+                // Add event listener to input
+                const imageInput = document.getElementById('imageInput');
+                imageInput.addEventListener('change', (event) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imagePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                });
+
+                // Trigger file input click when image is clicked
+                imagePreview.addEventListener('click', () => {
+                    imageInput.click();
+                });
+
+                editTrigger = true;
+            }
         }
 
+        const cancelEdit = () => {
+            document.getElementById('imageContent').innerHTML = originalModalContent;
+            editTrigger = false;
+        }
     </script>
 </head>
 <body>
-<div class="mainPlate" style="display: flex; justify-content: center; align-items: center; background-color: aqua; width: 100vw; height: 100vh">
+<div class="mainPlate"
+     style="display: flex; justify-content: center; align-items: center; background-color: aqua; width: 100vw; height: 100vh">
     <div style="height: 90%; width: 100%; margin-left: 60px; margin-right: 60px" class="mainPageTemplate">
         <h1>THIS IS MAIN</h1>
         <button class="defaultButton" onclick="hello()" role="button">눌러봐라</button>
@@ -99,17 +161,14 @@
         </div>
         <div id="modalPage" class="modalOverlay">
             <div id="imageContent" class="modalContainer">
-                <div class="modalHeader">
-                    <img id="modalImage" src="" alt="Modal Image" style="width: 100%;">
+                <div id="modalImage" class="modalHeader">
+                    <img src="" alt="Modal Image" style="width: 100%;">
                 </div>
                 <div class="modalBody">
                     <p>TEST</p>
                 </div>
-                <div>
-                    <button class="defaultButton" onclick="editPageTransition()">수정하기</button>
-                </div>
-
                 <div class="modalFooter">
+                    <button class="defaultButton" onclick="editPageTransition()">수정하기</button>
                     <button class="defaultButton" onclick="closeModal()">Close</button>
                 </div>
             </div>
