@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
         }
 
-        .modal-overlay {
+        .modalOverlay {
             display: none; /* Hidden by default */
             position: fixed;
             top: 0;
@@ -21,7 +21,7 @@
             z-index: 1000; /* On top of other elements */
         }
 
-        .modal-container {
+        .modalContainer {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -29,24 +29,18 @@
             background: white;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 1001; /* On top of the overlay */
+            z-index: 1001;
         }
 
-        .modal-header, .modal-footer {
+        .modalHeader, .modalFooter {
             padding: 10px 0;
         }
 
-        .modal-body {
+        .modalBody {
             padding: 20px 0;
         }
 
-        .close-button {
-            background: #ff5c5c;
-            border: none;
-            color: white;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
+
     </style>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
@@ -75,14 +69,14 @@
                 .catch(error => console.error('Error fetching images:', error));
         });
 
-        function showModal(imageUrl) {
+        const showModal = (imageUrl) => {
             document.getElementById('modalImage').src = imageUrl.src;
-            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('modalPage').style.display = 'block';
+        }
+        const closeModal = () => {
+            document.getElementById('modalPage').style.display = 'none';
         }
 
-        function closeModal() {
-            document.getElementById('modalOverlay').style.display = 'none';
-        }
     </script>
 </head>
 <body>
@@ -97,20 +91,17 @@
             <h3>테스트</h3>
             <div id="imageContainer"></div>
         </div>
-
-        <button class="defaultButton" onclick="showModal()">Open Modal</button>
-
-        <div id="modalOverlay" class="modal-overlay">
-            <div class="modal-container">
-                <div class="modal-header">
-                    <img id="modalImage" src="" alt="Modal Image" style="width: 100%;">
-                </div>
-                <div class="modal-body">
-                    <p>TEST</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="defaultButton" onclick="closeModal()">Close</button>
-                </div>
+        <div id="modalPage" class="modalOverlay">
+            <div id="imageContent" class="modalContainer">
+                    <div class="modalHeader">
+                        <img id="modalImage" src="" alt="Modal Image" style="width: 100%;">
+                    </div>
+                    <div class="modalBody">
+                        <p>TEST</p>
+                    </div>
+                    <div class="modalFooter">
+                        <button class="defaultButton" onclick="closeModal()">Close</button>
+                    </div>
             </div>
         </div>
     </div>
