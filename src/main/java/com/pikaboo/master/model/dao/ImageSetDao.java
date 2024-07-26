@@ -18,6 +18,8 @@ public interface ImageSetDao {
 
     @Delete("delete from imageMain where id=#{id}")
     public void delete(int id) throws SQLException;
+    @Delete("delete imgUrl from imageMain where imgUrl=#{url}")
+    public void deleteUrl(String url) throws SQLException;
 
     @Select("select id, userName, imgUrl, likeStatus, privateCheck from imageMain where id=#{id}")
     public ImageSet select(int id) throws SQLException;

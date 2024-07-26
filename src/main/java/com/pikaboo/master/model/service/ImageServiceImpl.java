@@ -29,6 +29,12 @@ public class ImageServiceImpl implements ImageService {
         imageDao.urlUpdate(newUrl, prevUrl);
     }
 
+    @Override
+    public void removeUrl(String url) throws SQLException {
+        imageDao.deleteUrl(url);
+    }
+
+
 
     @Override
     public void remove(int no) throws SQLException {
