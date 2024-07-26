@@ -26,9 +26,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            /*background: white;*/
+            width: 400px;
             padding: 20px;
-            /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);*/
             z-index: 1001;
         }
 
@@ -104,14 +103,16 @@
                 // Save original content before editing
                 originalModalContent = editMainPlate.innerHTML;
 
-                const editImageContainer = document.createElement('div');
+                const editImageContainer = document.createElement('form');
+                editImageContainer.method = "post";
+                editImageContainer.action = "/image/edit"
                 editImageContainer.classList.add('fileUploadContainer');
                 editImageContainer.innerHTML = `
                     <img id="imagePreview" src="" alt="Logo" style="width: 100%; padding-bottom: 10px; cursor: pointer; margin: auto"/>
                     <input type="file" id="imageInput" class="padded-input" accept="image/*" style="display: none;" name="targetImage"/>
                     <label for="imageInput" style="cursor: pointer;">이미지 선택</label>
                     <button class="defaultButton" onclick="cancelEdit()">수정취소</button>
-                    <button class="defaultButton" onclick="">저장하기</button>
+                    <button type="submit" class="defaultButton" onclick="">저장하기</button>
                 `;
 
                 editMainPlate.innerHTML = '';
@@ -144,6 +145,10 @@
             document.getElementById('imageContent').innerHTML = originalModalContent;
             editTrigger = false;
         }
+
+        // const saveImage = () => {
+        //     fetch("/")
+        // }
     </script>
 </head>
 <body>

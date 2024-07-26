@@ -30,19 +30,27 @@ public class ImageController {
         }
     }
 
-//    @GetMapping("/edit")
-//    public String edit(@RequestParam("id") int targetId,  Model model) {
+    @PostMapping("/edit")
+    public String edit() {
 //        try {
 //            model.addAttribute("imageMan", service.read(targetId));
 //        }catch (SQLException e) {
 //            e.printStackTrace();
 //        }
-//        return "index";
-//    }
+        return "redirect:/intro";
+    }
 
     @PostMapping("/delete")
     public String deleteImg(int targetid) {
 
         return "redirect:/main";
     }
+
+//    @PostMapping("/save")
+//    public String deleteImg(int targetid) {
+//
+//        return "redirect:/main";
+//    }
+
+
 }
