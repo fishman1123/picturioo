@@ -39,6 +39,9 @@
         .modalBody {
             padding: 20px 0;
         }
+        #modalImage {
+            max-height: 500px;
+        }
 
 
     </style>
@@ -76,6 +79,9 @@
         const closeModal = () => {
             document.getElementById('modalPage').style.display = 'none';
         }
+        const editPageTransition = () => {
+            console.log("tome to edit");
+        }
 
     </script>
 </head>
@@ -93,15 +99,19 @@
         </div>
         <div id="modalPage" class="modalOverlay">
             <div id="imageContent" class="modalContainer">
-                    <div class="modalHeader">
-                        <img id="modalImage" src="" alt="Modal Image" style="width: 100%;">
-                    </div>
-                    <div class="modalBody">
-                        <p>TEST</p>
-                    </div>
-                    <div class="modalFooter">
-                        <button class="defaultButton" onclick="closeModal()">Close</button>
-                    </div>
+                <div class="modalHeader">
+                    <img id="modalImage" src="" alt="Modal Image" style="width: 100%;">
+                </div>
+                <div class="modalBody">
+                    <p>TEST</p>
+                </div>
+                <div>
+                    <button class="defaultButton" onclick="editPageTransition()">수정하기</button>
+                </div>
+
+                <div class="modalFooter">
+                    <button class="defaultButton" onclick="closeModal()">Close</button>
+                </div>
             </div>
         </div>
     </div>
