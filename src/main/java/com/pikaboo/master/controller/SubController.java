@@ -42,7 +42,7 @@ public class SubController {
         System.out.println(file);
         System.out.println(name);
 
-        // Generate current date in yyyyMMdd format
+        // Add date to the name
         String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
         String uploadDir = System.getProperty("user.home") + "/Desktop/userGroup/" + name + "/";
         Path uploadPath = Paths.get(uploadDir);
@@ -52,7 +52,6 @@ public class SubController {
                 Files.createDirectories(uploadPath);
             }
 
-            // Get original file name and add date before the extension
             String originalFileName = file.getOriginalFilename();
             String fileExtension = "";
             String fileNameWithoutExtension = originalFileName;
@@ -63,20 +62,20 @@ public class SubController {
                 fileNameWithoutExtension = originalFileName.substring(0, dotIndex);
             }
 
-            // Create new file name with date
-            String newFileName = fileNameWithoutExtension + "_" + dateStr + fileExtension;
+            // Generate UUID
+            String uuid = UUID.randomUUID().toString();
+
+            // Include UUID in the filename
+            String newFileName = uuid + "_" + fileNameWithoutExtension + "_" + dateStr + fileExtension;
             String filePath = uploadDir + newFileName;
             System.out.println(filePath);
             Path destination = Paths.get(filePath);
             file.transferTo(destination.toFile());
 
-            // Generate UUID for cache busting
-            String uuid = UUID.randomUUID().toString();
-
             ImageSet tempImageSet = new ImageSet();
             tempImageSet.setId("1");
             tempImageSet.setUserName(name);
-            tempImageSet.setImgUrl("/userGroup/" + name + "/" + newFileName + "?v=" + uuid);
+            tempImageSet.setImgUrl("/userGroup/" + name + "/" + newFileName);
             tempImageSet.setLikeStatus(0);
             tempImageSet.setPrivateCheck(false);
 
@@ -87,7 +86,5 @@ public class SubController {
 
         return "redirect:/main"; // Redirect to the main page
     }
-
-
 
 }

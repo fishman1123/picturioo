@@ -13,6 +13,8 @@ public interface ImageSetDao {
 
     @Update("update imageMain set userName=#{userName}, imgUrl=#{imgUrl} where id=#{id}")
     public void update(ImageSet imageSet) throws SQLException;
+    @Update("update imageMain set  imgUrl=#{newUrl} where imgUrl=#{prevUrl}")
+    public void urlUpdate(String newUrl, String prevUrl) throws SQLException;
 
     @Delete("delete from imageMain where id=#{id}")
     public void delete(int id) throws SQLException;
@@ -22,4 +24,5 @@ public interface ImageSetDao {
 
     @Select("SELECT id, userName, imgUrl, likeStatus, privateCheck FROM imageMain")
     List<ImageSet> selectAll() throws SQLException;
+
 }

@@ -73,6 +73,7 @@
     position: relative;
     user-select: none;
     -webkit-user-select: none;
+    min-width: 500px;
 }
 .uploadPageTemplate {
     max-height: 500px;

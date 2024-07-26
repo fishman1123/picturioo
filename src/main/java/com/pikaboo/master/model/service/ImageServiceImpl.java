@@ -25,6 +25,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void editUrl(String newUrl, String prevUrl) throws SQLException {
+        imageDao.urlUpdate(newUrl, prevUrl);
+    }
+
+
+    @Override
     public void remove(int no) throws SQLException {
 
     }

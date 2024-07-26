@@ -51,6 +51,7 @@
             fetch('/image/all')
                 .then(response => response.json())
                 .then(data => {
+                    console.log("data transfer", data);
                     const container = document.getElementById("imageContainer");
                     data.forEach(image => {
                         const buttonElement = document.createElement('button');
@@ -58,12 +59,12 @@
                         buttonElement.style.width = "auto";
                         buttonElement.style.height = "120px";
                         buttonElement.style.padding = "0";
-
                         const imgElement = document.createElement('img');
                         imgElement.src = image.imgUrl;  // Use the imgUrl directly
                         imgElement.alt = image.userName;
                         imgElement.style.width = '100%';
                         imgElement.style.height = '100%';
+                        imgElement.setAttribute('data-url', image.imgUrl);
                         buttonElement.onclick = () => showModal(imgElement);
                         container.appendChild(buttonElement);
                         buttonElement.appendChild(imgElement);
@@ -79,6 +80,7 @@
             img.src = imageElement.src;
             img.alt = imageElement.alt;
             img.style.width = '100%';
+            img.setAttribute('data-url', imageElement.getAttribute('data-url'));
             modalImage.appendChild(img);
             document.getElementById('modalPage').style.display = 'block';
 
@@ -105,24 +107,26 @@
 
                 const editImageContainer = document.createElement('form');
                 editImageContainer.method = "post";
-                editImageContainer.action = "/image/edit"
+                editImageContainer.action = "/image/edit";
+                editImageContainer.enctype = "multipart/form-data";
                 editImageContainer.classList.add('fileUploadContainer');
                 editImageContainer.innerHTML = `
                     <img id="imagePreview" src="" alt="Logo" style="width: 100%; padding-bottom: 10px; cursor: pointer; margin: auto"/>
                     <input type="file" id="imageInput" class="padded-input" accept="image/*" style="display: none;" name="targetImage"/>
+                    <input type="hidden" id="originalUrl" name="originalUrl" value="" />
                     <label for="imageInput" style="cursor: pointer;">이미지 선택</label>
-                    <button class="defaultButton" onclick="cancelEdit()">수정취소</button>
-                    <button type="submit" class="defaultButton" onclick="">저장하기</button>
+                    <button type="button" class="defaultButton" onclick="cancelEdit()">수정취소</button>
+                    <button type="submit" class="defaultButton">저장하기</button>
                 `;
 
                 editMainPlate.innerHTML = '';
                 editMainPlate.appendChild(editImageContainer);
 
-                // Set image preview src to modal image src
                 const imagePreview = document.getElementById('imagePreview');
                 imagePreview.src = modalImage.src;
 
-                // Add event listener to input
+                const originalUrlInput = document.getElementById('originalUrl');
+                originalUrlInput.value = modalImage.getAttribute('data-url');
                 const imageInput = document.getElementById('imageInput');
                 imageInput.addEventListener('change', (event) => {
                     const reader = new FileReader();
@@ -132,7 +136,6 @@
                     reader.readAsDataURL(event.target.files[0]);
                 });
 
-                // Trigger file input click when image is clicked
                 imagePreview.addEventListener('click', () => {
                     imageInput.click();
                 });
@@ -146,9 +149,6 @@
             editTrigger = false;
         }
 
-        // const saveImage = () => {
-        //     fetch("/")
-        // }
     </script>
 </head>
 <body>
@@ -176,6 +176,9 @@
                     <button class="defaultButton" onclick="editPageTransition()">수정하기</button>
                     <button class="defaultButton" onclick="closeModal()">Close</button>
                 </div>
+                <c:if test="${not empty message}">
+                    <div class="alert alert-success">${message}</div>
+                </c:if>
             </div>
         </div>
     </div>
