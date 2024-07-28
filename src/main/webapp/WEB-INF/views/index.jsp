@@ -115,6 +115,8 @@
         });
 
 
+
+
         const showModal = (imageElement) => {
             const modalImage = document.getElementById('modalImage');
             modalImage.innerHTML = '';
@@ -218,10 +220,52 @@
                     console.error('Error:', error);
                 });
         }
+        const hello = () => {
+            window.location.href = '/main';
+        }
+
+        const searchByName = () => {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            if (searchInput === '') {
+                alert("안됩니다");
+                return;
+            }
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = ''; // Clear existing images
+
+            fetch('/image/all')
+                .then(response => response.json())
+                .then(data => {
+                    let resultsFound = false;
+                    data.forEach(image => {
+                        if (image.userName.toLowerCase().includes(searchInput)) {
+                            const buttonElement = document.createElement('button');
+                            const imgElement = document.createElement('img');
+                            resultsFound = true;
 
 
-
-
+                            buttonElement.classList.add("defaultButton");
+                            buttonElement.style.width = "auto";
+                            buttonElement.style.height = "120px";
+                            buttonElement.style.padding = "0";
+                            imgElement.src = image.imgUrl;
+                            imgElement.alt = image.userName;
+                            imgElement.style.width = '100%';
+                            imgElement.style.height = '100%';
+                            imgElement.setAttribute('data-url', image.imgUrl);
+                            buttonElement.onclick = () => showModal(imgElement);
+                            imageContainer.appendChild(buttonElement);
+                            buttonElement.appendChild(imgElement);
+                        }
+                    });
+                    let searchResult = document.getElementById("searchResult");
+                    if (resultsFound) {
+                        searchResult.innerText = `Results for ` + searchInput;
+                    } else {
+                        searchResult.innerText = `No results found for ` + searchInput;
+                    }                })
+                .catch(error => console.error('Error fetching images:', error));
+        }
     </script>
 </head>
 <body>
@@ -230,7 +274,10 @@
 
     <div style="height: 90%; width: 100%; margin-left: 60px; margin-right: 60px" class="mainPageTemplate">
         <h1>THIS IS MAIN</h1>
-        <div><h1>searchbar</h1></div>
+        <div class="searchContainer">
+            <input type="text" id="searchInput" placeholder="Search by name...">
+            <button class="defaultButton" onclick="searchByName()">Search</button>
+        </div>
         <div>
             <button class="defaultButton" onclick="hello()" role="button">눌러봐라</button>
             <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/'">Go to Main</button>
@@ -239,7 +286,7 @@
 
 
         <div style="margin-top: 50px">
-            <h3>테스트</h3>
+            <h3 id="searchResult">모든 사진</h3>
             <div id="imageContainer"></div>
         </div>
         <div id="modalPage" class="modalOverlay">
