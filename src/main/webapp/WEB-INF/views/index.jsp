@@ -1,9 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+    response.setDateHeader("Expires", 0); // Proxies.
+%>
 
 <html>
 <head>
+
     <title>Title</title>
+
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
     <style>
         body {
@@ -46,6 +53,7 @@
     <script type="text/javascript">
         let editTrigger = false;
         let originalModalContent = '';
+
 
         document.addEventListener('DOMContentLoaded', () => {
             fetch('/image/all')
@@ -144,16 +152,48 @@
             }
         }
 
+
         const cancelEdit = () => {
             document.getElementById('imageContent').innerHTML = originalModalContent;
             editTrigger = false;
         }
+        const deleteImage = () => {
+            const modalImage = document.querySelector('#modalImage img');
+            const imageUrl = modalImage.getAttribute('data-url');
+
+            fetch('/image/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: imageUrl })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text(); // Assuming the server returns plain text
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(data => {
+                    console.log(data); // For debugging
+                    window.location.href = '/main';
+                })
+                .catch(error => {
+                    console.log(error);
+                    console.error('Error:', error);
+                });
+        }
+
+
+
 
     </script>
 </head>
 <body>
 <div class="mainPlate"
      style="display: flex; justify-content: center; align-items: center; background-color: aqua; width: 100vw; height: 100vh">
+
     <div style="height: 90%; width: 100%; margin-left: 60px; margin-right: 60px" class="mainPageTemplate">
         <h1>THIS IS MAIN</h1>
         <button class="defaultButton" onclick="hello()" role="button">눌러봐라</button>
@@ -174,6 +214,7 @@
                 </div>
                 <div class="modalFooter">
                     <button class="defaultButton" onclick="editPageTransition()">수정하기</button>
+                    <button class="defaultButton" onclick="deleteImage()">삭제하기</button>
                     <button class="defaultButton" onclick="closeModal()">Close</button>
                 </div>
                 <c:if test="${not empty message}">

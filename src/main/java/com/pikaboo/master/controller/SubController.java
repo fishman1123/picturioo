@@ -1,6 +1,5 @@
 package com.pikaboo.master.controller;
 
-
 import com.pikaboo.master.dto.ImageSet;
 import com.pikaboo.master.model.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +28,6 @@ public class SubController {
 
     @GetMapping
     public String redirectToMain() {
-
         return "errorPage";
     }
 
@@ -36,6 +35,7 @@ public class SubController {
     public String uploadMain() {
         return "uploadPage";
     }
+
     @PostMapping("/create")
     public String uploadMainPost(@RequestParam("targetImage") MultipartFile file,
                                  @RequestParam("userName") String name) {
@@ -78,6 +78,7 @@ public class SubController {
             tempImageSet.setImgUrl("/userGroup/" + name + "/" + newFileName);
             tempImageSet.setLikeStatus(0);
             tempImageSet.setPrivateCheck(false);
+            tempImageSet.setCreatedAt(LocalDateTime.now());  // Set the current date and time
 
             service.add(tempImageSet);
         } catch (Exception err) {
@@ -86,5 +87,4 @@ public class SubController {
 
         return "redirect:/main"; // Redirect to the main page
     }
-
 }
