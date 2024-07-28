@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: aqua;
+    background-color: white;
     width: 100vw;
     height: 100vh;
 }
@@ -135,10 +135,19 @@
     margin-bottom: 20px;
 }
 
+#imageContainer {
+    height: calc(100vh - 30px);
+    overflow-y: auto;
+}
+
 
 @media (min-width: 768px) {
     .mainPageTemplate {
         padding: 0.25em 0.75em;
+    }
+    #imageContainer {
+        height: calc(100vh - 400px);
+        overflow-y: auto;
     }
 }
 

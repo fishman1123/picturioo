@@ -56,30 +56,64 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
+            let imageList = {};
             fetch('/image/all')
                 .then(response => response.json())
                 .then(data => {
                     console.log("data transfer", data);
                     const container = document.getElementById("imageContainer");
+
+                    // Group images by the exact minute
                     data.forEach(image => {
-                        const buttonElement = document.createElement('button');
-                        buttonElement.classList.add("defaultButton");
-                        buttonElement.style.width = "auto";
-                        buttonElement.style.height = "120px";
-                        buttonElement.style.padding = "0";
-                        const imgElement = document.createElement('img');
-                        imgElement.src = image.imgUrl;  // Use the imgUrl directly
-                        imgElement.alt = image.userName;
-                        imgElement.style.width = '100%';
-                        imgElement.style.height = '100%';
-                        imgElement.setAttribute('data-url', image.imgUrl);
-                        buttonElement.onclick = () => showModal(imgElement);
-                        container.appendChild(buttonElement);
-                        buttonElement.appendChild(imgElement);
+                        const createdAt = new Date(image.createdAt);
+                        const minuteKey = createdAt.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
+                        if (!imageList[minuteKey]) {
+                            imageList[minuteKey] = [];
+                        }
+                        imageList[minuteKey].push(image);
                     });
+
+                    // Loop through the grouped images by minute
+                    Object.keys(imageList).forEach(minuteKey => {
+                        // Format minuteKey to {year}년{month}월{day}일{hour}시{minute}분
+                        const match = minuteKey.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+                        const formattedDate = match[1] + '년' + match[2] + '월' + match[3] + '일' + match[4] + '시' + match[5] + '분';
+
+                        // Create and append the <h1> element for the minute
+                        const minuteHeader = document.createElement('h3');
+                        minuteHeader.textContent = formattedDate;
+                        container.appendChild(minuteHeader);
+
+                        // Create and append a <div> for grouping the buttons for this minute
+                        const minuteDiv = document.createElement('div');
+                        minuteDiv.classList.add('minuteGroup');
+                        container.appendChild(minuteDiv);
+
+                        imageList[minuteKey].forEach(image => {
+                            const buttonElement = document.createElement('button');
+                            const imgElement = document.createElement('img');
+
+                            buttonElement.classList.add("defaultButton");
+                            buttonElement.style.width = "auto";
+                            buttonElement.style.height = "120px";
+                            buttonElement.style.padding = "0";
+                            imgElement.src = image.imgUrl;  // Use the imgUrl directly
+                            imgElement.alt = image.userName;
+                            imgElement.style.width = '100%';
+                            imgElement.style.height = '100%';
+                            imgElement.setAttribute('data-url', image.imgUrl);
+                            buttonElement.onclick = () => showModal(imgElement);
+                            minuteDiv.appendChild(buttonElement);
+
+                            buttonElement.appendChild(imgElement);
+                        });
+                    });
+
+                    console.log(imageList); // For debugging to see the grouped images
                 })
                 .catch(error => console.error('Error fetching images:', error));
         });
+
 
         const showModal = (imageElement) => {
             const modalImage = document.getElementById('modalImage');
@@ -192,13 +226,17 @@
 </head>
 <body>
 <div class="mainPlate"
-     style="display: flex; justify-content: center; align-items: center; background-color: aqua; width: 100vw; height: 100vh">
+     style="display: flex; justify-content: center; align-items: center; background-color: white; width: 100vw; height: 100vh">
 
     <div style="height: 90%; width: 100%; margin-left: 60px; margin-right: 60px" class="mainPageTemplate">
         <h1>THIS IS MAIN</h1>
-        <button class="defaultButton" onclick="hello()" role="button">눌러봐라</button>
-        <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/'">Go to Main</button>
-        <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/upload/create'">Go Upload</button>
+        <div><h1>searchbar</h1></div>
+        <div>
+            <button class="defaultButton" onclick="hello()" role="button">눌러봐라</button>
+            <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/'">Go to Main</button>
+            <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/upload/create'">Go Upload</button>
+        </div>
+
 
         <div style="margin-top: 50px">
             <h3>테스트</h3>

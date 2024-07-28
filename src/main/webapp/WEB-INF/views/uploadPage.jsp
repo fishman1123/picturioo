@@ -11,6 +11,12 @@
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
+<script type="text/javascript">
+
+    const backToMain = () => {
+        window.location.href = '/main';
+    }
+</script>
 <body>
 <div class="mainPlate uploadPlate">
     <div class="mainPageTemplate uploadPageTemplate">
@@ -33,6 +39,7 @@
                 </div>
             </div>
             <button class="defaultButton uploadButton">업로드</button>
+            <button style="margin-top: 10px" class="defaultButton uploadButton" onclick="backToMain()">업로드 취소</button>
         </form>
     </div>
 </div>
