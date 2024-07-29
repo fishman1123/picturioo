@@ -1,6 +1,5 @@
 package com.pikaboo.master.controller;
 
-import ch.qos.logback.core.model.Model;
 import com.pikaboo.master.dto.ImageSet;
 import com.pikaboo.master.model.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,11 +53,9 @@ public class ImageController {
         }
 
         try {
-            // Extract the file path from the original URL
             String filePath = System.getProperty("user.home") + "/Desktop" + originalUrl.substring(originalUrl.indexOf("/userGroup"));
             System.out.println("Original file path: " + filePath);
 
-            // Extract the username from the original URL
             Pattern pattern = Pattern.compile("/userGroup/([^/]+)/.+");
             Matcher matcher = pattern.matcher(originalUrl);
             String userName = null;
@@ -71,7 +68,6 @@ public class ImageController {
                 return "redirect:/main";
             }
 
-            // Extract original file name and extension
             String originalFileName = targetFile.getOriginalFilename();
             System.out.println("Original file name: " + originalFileName);
             String fileExtension = "";
@@ -83,34 +79,27 @@ public class ImageController {
                 fileNameWithoutExtension = originalFileName.substring(0, dotIndex);
             }
 
-            // Generate new UUID
             String uuid = UUID.randomUUID().toString();
 
-            // Create new URL with new UUID
             String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
             String newFileName = uuid + "_" + fileNameWithoutExtension + "_" + dateStr + fileExtension;
             String newFilePath = System.getProperty("user.home") + "/Desktop/userGroup/" + userName + "/" + newFileName;
 
-            // Ensure the directory exists
             Path newUploadPath = Paths.get(newFilePath).getParent();
             if (!Files.exists(newUploadPath)) {
                 Files.createDirectories(newUploadPath);
             }
 
-            // Save the new file to the new path
             Path newPath = Paths.get(newFilePath);
             targetFile.transferTo(newPath.toFile());
 
-            // Update the URL in the database
             service.editUrl("/userGroup/" + userName + "/" + newFileName, originalUrl);
 
-            // Delete the old image
             Path oldPath = Paths.get(filePath);
             if (Files.exists(oldPath)) {
                 Files.delete(oldPath);
             }
 
-            // Add success message
             redirectAttributes.addFlashAttribute("message", "You successfully uploaded '" + targetFile.getOriginalFilename() + "'");
 
         } catch (IOException | SQLException e) {
@@ -129,16 +118,13 @@ public class ImageController {
         String imageUrl = request.get("url");
 
         try {
-            // Extract the file path from the URL
             String filePath = System.getProperty("user.home") + "/Desktop" + imageUrl.substring(imageUrl.indexOf("/userGroup"));
             Path path = Paths.get(filePath);
 
-            // Delete the file from the file system
             if (Files.exists(path)) {
                 Files.delete(path);
             }
 
-            // Remove the database record
             service.removeUrl(imageUrl);
 
             return ResponseEntity.ok("Image deleted successfully");
@@ -148,17 +134,11 @@ public class ImageController {
         }
     }
 
-
     private String extractUserNameFromPath(String originalUrl) {
         String[] parts = originalUrl.split("/");
-        return parts[parts.length - 2]; // Assuming the username is the second last part of the path
+        return parts[parts.length - 2];
     }
 
-//    @PostMapping("/save")
-//    public String deleteImg(int targetid) {
-//
-//        return "redirect:/main";
-//    }
 
 
 }

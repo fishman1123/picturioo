@@ -49,6 +49,16 @@
         #modalImage img {
             max-height: 500px;
         }
+        #mainDish {
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        #mainDish.fadeIn {
+            opacity: 1;
+        }
+        #mainDish.fadeOut {
+            opacity: 0;
+        }
     </style>
     <script type="text/javascript">
         let editTrigger = false;
@@ -56,6 +66,10 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
+            let introPage = document.getElementById("mainDish");
+            setTimeout(() => {
+                introPage.classList.add("fadeIn");
+            }, 300);
 
 
 
@@ -78,16 +92,13 @@
 
                     // Loop through the grouped images by minute
                     Object.keys(imageList).forEach(minuteKey => {
-                        // Format minuteKey to {year}년{month}월{day}일{hour}시{minute}분
                         const match = minuteKey.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
                         const formattedDate = match[1] + '년' + match[2] + '월' + match[3] + '일' + match[4] + '시' + match[5] + '분';
 
-                        // Create and append the <h1> element for the minute
                         const minuteHeader = document.createElement('h3');
                         minuteHeader.textContent = formattedDate;
                         container.appendChild(minuteHeader);
 
-                        // Create and append a <div> for grouping the buttons for this minute
                         const minuteDiv = document.createElement('div');
                         minuteDiv.classList.add('minuteGroup');
                         container.appendChild(minuteDiv);
@@ -100,7 +111,7 @@
                             buttonElement.style.width = "auto";
                             buttonElement.style.height = "120px";
                             buttonElement.style.padding = "0";
-                            imgElement.src = image.imgUrl;  // Use the imgUrl directly
+                            imgElement.src = image.imgUrl;
                             imgElement.alt = image.userName;
                             imgElement.style.width = '100%';
                             imgElement.style.height = '100%';
@@ -111,14 +122,9 @@
                             buttonElement.appendChild(imgElement);
                         });
                     });
-
-                    console.log(imageList); // For debugging to see the grouped images
                 })
                 .catch(error => console.error('Error fetching images:', error));
         });
-
-
-
 
         const showModal = (imageElement) => {
             const modalImage = document.getElementById('modalImage');
@@ -130,10 +136,8 @@
             img.setAttribute('data-url', imageElement.getAttribute('data-url'));
             modalImage.appendChild(img);
             document.getElementById('modalPage').style.display = 'block';
-
-            // Store original content for undo
             originalModalContent = document.getElementById('imageContent').innerHTML;
-            editTrigger = false;  // Ensure edit mode is off initially
+            editTrigger = false;
         }
 
         const closeModal = () => {
@@ -145,11 +149,9 @@
             const editMainPlate = document.getElementById('imageContent');
 
             if (editTrigger) {
-                // Undo the edit: restore original content
                 editMainPlate.innerHTML = originalModalContent;
                 editTrigger = false;
             } else {
-                // Save original content before editing
                 originalModalContent = editMainPlate.innerHTML;
 
                 const editImageContainer = document.createElement('form');
@@ -209,7 +211,7 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        return response.text(); // Assuming the server returns plain text
+                        return response.text();
                     } else {
                         throw new Error('Network response was not ok.');
                     }
@@ -234,7 +236,7 @@
                 return;
             }
             const imageContainer = document.getElementById('imageContainer');
-            imageContainer.innerHTML = ''; // Clear existing images
+            imageContainer.innerHTML = '';
 
             fetch('/image/all')
                 .then(response => response.json())
@@ -286,35 +288,35 @@
     </script>
 </head>
 <body>
-<div class="mainPlate"
-     style="display: flex; justify-content: center; align-items: center; background-color: white; width: 100vw; height: 100vh">
-
-    <div style="height: 90%; width: 100%; margin-left: 60px; margin-right: 60px" class="mainPageTemplate">
-        <div style="display: flex; justify-content: center">
+<div id="mainDish" class="mainPlate" style="display: flex; justify-content: center; align-items: center; background-color: white; width: 100vw; height: 100vh">
+    <div style="height: 90%; width: 100%; margin-left: 60px; margin-right: 60px; box-shadow: 0 0 0 0 " class="mainPageTemplate">
+        <div style="display: flex; margin-top: 20px; justify-content: center">
             <img onclick="hello()" id="imageIntro" src="/img/logo.png" alt="Logo" style="width: 100px; padding-bottom: 10px; cursor: pointer; margin: auto"/>
         </div>
-        <h1>사진 갤러리</h1>
-
+        <h1 style="text-align: center">사진 갤러리</h1>
+    <div style="display: flex; flex-direction: column; align-items: center">
         <div id="searchContainer" style=" height: 30px; width: 50%; margin-top: 10px">
-            <label class="input">
                 <div>
-                    <input id="searchInput" class="input__field" onclick="wohhh(this.nextElementSibling)" onblur="checkInput(this, this.nextElementSibling)" style="height: 100%" type="text" placeholder=" " name="userName" />
-                    <span  id="placeholder" class="input__label" style="top: 7px; left: 7px">검색할 이름을 입력해주세요</span>
+                    <label class="input">
+                        <input id="searchInput" class="input__field" onclick="wohhh(this.nextElementSibling)" onblur="checkInput(this, this.nextElementSibling)" style="height: 100%" type="text" placeholder=" " name="userName" />
+                        <span  id="placeholder" class="input__label" style="top: 7px; left: 7px">검색할 이름을 입력해주세요</span>
+                    </label>
+
                 </div>
-                <div>
-                    <button style="margin-top: 10px" class="defaultButton" onclick="searchByName()">Search</button>
+            <div style="width: 100%; display: flex">
+                <div style="margin: auto">
+                    <button style="margin-top: 10px" class="defaultButton" onclick="searchByName()">검색하기</button>
+                    <button class="defaultButton" style="margin: 0 0 0 0" onclick="location.href = '/'">첫 화면으로 가기</button>
+                    <button class="defaultButton" style="margin: 0 20px 0 0" onclick="location.href = '/upload/create'">사진 올리기</button>
                 </div>
-            </label>
-        </div>
-        <div style="margin-top: 60px; display: flex">
-            <button class="defaultButton" style="margin: 0 20px 0 0" onclick="location.href = '/'">Go to Main</button>
-            <button class="defaultButton" style="margin: 0 20px 0 10px" onclick="location.href = '/upload/create'">Go Upload</button>
+            </div>
         </div>
 
+    </div>
 
         <div style="margin-top: 50px">
-            <h3 id="searchResult">모든 사진</h3>
-            <div id="imageContainer"></div>
+            <h3 id="searchResult" style="margin-left: 10px">모든 사진</h3>
+            <div id="imageContainer" style="margin: 0 10px 0 10px"></div>
         </div>
         <div id="modalPage" class="modalOverlay">
             <div id="imageContent" class="modalContainer">
@@ -322,7 +324,6 @@
                     <img src="" alt="Modal Image" style="width: 100%;">
                 </div>
                 <div class="modalBody">
-                    <p>TEST</p>
                 </div>
                 <div class="modalFooter">
                     <button class="defaultButton" onclick="editPageTransition()">수정하기</button>

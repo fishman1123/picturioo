@@ -42,7 +42,6 @@ public class SubController {
         System.out.println(file);
         System.out.println(name);
 
-        // Add date to the name
         String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
         String uploadDir = System.getProperty("user.home") + "/Desktop/userGroup/" + name + "/";
         Path uploadPath = Paths.get(uploadDir);
@@ -62,10 +61,8 @@ public class SubController {
                 fileNameWithoutExtension = originalFileName.substring(0, dotIndex);
             }
 
-            // Generate UUID
             String uuid = UUID.randomUUID().toString();
 
-            // Include UUID in the filename
             String newFileName = uuid + "_" + fileNameWithoutExtension + "_" + dateStr + fileExtension;
             String filePath = uploadDir + newFileName;
             System.out.println(filePath);
@@ -78,13 +75,13 @@ public class SubController {
             tempImageSet.setImgUrl("/userGroup/" + name + "/" + newFileName);
             tempImageSet.setLikeStatus(0);
             tempImageSet.setPrivateCheck(false);
-            tempImageSet.setCreatedAt(LocalDateTime.now());  // Set the current date and time
+            tempImageSet.setCreatedAt(LocalDateTime.now());
 
             service.add(tempImageSet);
         } catch (Exception err) {
             err.printStackTrace();
         }
 
-        return "redirect:/main"; // Redirect to the main page
+        return "redirect:/main";
     }
 }
