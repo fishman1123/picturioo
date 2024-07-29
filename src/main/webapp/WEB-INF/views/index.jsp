@@ -56,6 +56,9 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
+
+
+
             let imageList = {};
             fetch('/image/all')
                 .then(response => response.json())
@@ -266,6 +269,20 @@
                     }                })
                 .catch(error => console.error('Error fetching images:', error));
         }
+        const wohhh = (labelElement) => {
+            console.log("ㅗㅗㅗㅗㅗㅗㅗㅗ");
+            trackingValue = document.getElementById(labelElement.id).textContent;
+            labelElement.innerText = "유저 이름을 입력해주세요";
+            console.log(`Label ID: ${labelElement.id}`);
+        }
+
+        const checkInput = (inputElement, labelElement) => {
+
+            if (inputElement.value === "") {
+                labelElement.innerText = trackingValue;
+            }
+            console.log(`Label ID: ${labelElement.id}`);
+        }
     </script>
 </head>
 <body>
@@ -273,15 +290,25 @@
      style="display: flex; justify-content: center; align-items: center; background-color: white; width: 100vw; height: 100vh">
 
     <div style="height: 90%; width: 100%; margin-left: 60px; margin-right: 60px" class="mainPageTemplate">
-        <h1>THIS IS MAIN</h1>
-        <div class="searchContainer">
-            <input type="text" id="searchInput" placeholder="Search by name...">
-            <button class="defaultButton" onclick="searchByName()">Search</button>
+        <div style="display: flex; justify-content: center">
+            <img onclick="hello()" id="imageIntro" src="/img/logo.png" alt="Logo" style="width: 100px; padding-bottom: 10px; cursor: pointer; margin: auto"/>
         </div>
-        <div>
-            <button class="defaultButton" onclick="hello()" role="button">눌러봐라</button>
-            <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/'">Go to Main</button>
-            <button class="defaultButton" style="margin: 0 20px 0 20px" onclick="location.href = '/upload/create'">Go Upload</button>
+        <h1>사진 갤러리</h1>
+
+        <div id="searchContainer" style=" height: 30px; width: 50%; margin-top: 10px">
+            <label class="input">
+                <div>
+                    <input id="searchInput" class="input__field" onclick="wohhh(this.nextElementSibling)" onblur="checkInput(this, this.nextElementSibling)" style="height: 100%" type="text" placeholder=" " name="userName" />
+                    <span  id="placeholder" class="input__label" style="top: 7px; left: 7px">검색할 이름을 입력해주세요</span>
+                </div>
+                <div>
+                    <button style="margin-top: 10px" class="defaultButton" onclick="searchByName()">Search</button>
+                </div>
+            </label>
+        </div>
+        <div style="margin-top: 60px; display: flex">
+            <button class="defaultButton" style="margin: 0 20px 0 0" onclick="location.href = '/'">Go to Main</button>
+            <button class="defaultButton" style="margin: 0 20px 0 10px" onclick="location.href = '/upload/create'">Go Upload</button>
         </div>
 
 
