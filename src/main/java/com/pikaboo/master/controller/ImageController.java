@@ -47,59 +47,70 @@ public class ImageController {
                           @RequestParam("originalUrl") String originalUrl,
                           RedirectAttributes redirectAttributes) {
 
+        //예외처리
         if (targetFile.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
             return "redirect:/main";
         }
 
-        try {
-            String filePath = System.getProperty("user.home") + "/Desktop" + originalUrl.substring(originalUrl.indexOf("/userGroup"));
-            System.out.println("Original file path: " + filePath);
 
+        try {
+            //파일 저장경로 할당
+            String filePath = System.getProperty("user.home") + "/Desktop" + originalUrl.substring(originalUrl.indexOf("/userGroup"));
+
+            //정규표현식을 통한 유저이름 확인
             Pattern pattern = Pattern.compile("/userGroup/([^/]+)/.+");
             Matcher matcher = pattern.matcher(originalUrl);
             String userName = null;
             if (matcher.find()) {
                 userName = matcher.group(1);
             }
-
+            //예외처리 자카르타 코어방식으로 리턴값 노출
             if (userName == null) {
                 redirectAttributes.addFlashAttribute("message", "Invalid original URL format");
                 return "redirect:/main";
             }
 
+            //파일 이름 할당
             String originalFileName = targetFile.getOriginalFilename();
-            System.out.println("Original file name: " + originalFileName);
             String fileExtension = "";
             String fileNameWithoutExtension = originalFileName;
 
+            //확장자 확인
             int dotIndex = originalFileName.lastIndexOf(".");
             if (dotIndex > 0 && dotIndex < originalFileName.length() - 1) {
                 fileExtension = originalFileName.substring(dotIndex);
                 fileNameWithoutExtension = originalFileName.substring(0, dotIndex);
             }
 
+            //uuid를 통한 독립성 부여
             String uuid = UUID.randomUUID().toString();
 
+            //날짜선언 및 이름 할당
             String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
             String newFileName = uuid + "_" + fileNameWithoutExtension + "_" + dateStr + fileExtension;
+            //새로운 경로를 위한 로컬 세이브 할당
             String newFilePath = System.getProperty("user.home") + "/Desktop/userGroup/" + userName + "/" + newFileName;
 
+
+            //현재 경로의 부모 반환
             Path newUploadPath = Paths.get(newFilePath).getParent();
             if (!Files.exists(newUploadPath)) {
                 Files.createDirectories(newUploadPath);
             }
 
+            //새로운 저장경로 할당 및 저장
             Path newPath = Paths.get(newFilePath);
             targetFile.transferTo(newPath.toFile());
 
+            //디비처리
             service.editUrl("/userGroup/" + userName + "/" + newFileName, originalUrl);
 
+            //예전파일에 대한 파일 추적 후 삭제
             Path oldPath = Paths.get(filePath);
             if (Files.exists(oldPath)) {
                 Files.delete(oldPath);
             }
-
             redirectAttributes.addFlashAttribute("message", "You successfully uploaded '" + targetFile.getOriginalFilename() + "'");
 
         } catch (IOException | SQLException e) {

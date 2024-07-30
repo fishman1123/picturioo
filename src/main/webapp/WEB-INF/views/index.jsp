@@ -40,6 +40,8 @@
 
         .modalHeader, .modalFooter {
             padding: 10px 0;
+            display: flex;
+            justify-content: center;
         }
 
         .modalBody {
@@ -293,7 +295,7 @@
         <div style="display: flex; margin-top: 20px; justify-content: center">
             <img onclick="hello()" id="imageIntro" src="/img/logo.png" alt="Logo" style="width: 100px; padding-bottom: 10px; cursor: pointer; margin: auto"/>
         </div>
-        <h1 style="text-align: center">사진 갤러리</h1>
+        <h1 style="text-align: center">PICTURIOO</h1>
     <div style="display: flex; flex-direction: column; align-items: center">
         <div id="searchContainer" style=" height: 30px; width: 50%; margin-top: 10px">
                 <div>
@@ -328,7 +330,7 @@
                 <div class="modalFooter">
                     <button class="defaultButton" onclick="editPageTransition()">수정하기</button>
                     <button class="defaultButton" onclick="deleteImage()">삭제하기</button>
-                    <button class="defaultButton" onclick="closeModal()">Close</button>
+                    <button class="defaultButton" onclick="closeModal()">창 닫기</button>
                 </div>
                 <c:if test="${not empty message}">
                     <div class="alert alert-success">${message}</div>

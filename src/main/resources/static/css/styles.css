@@ -136,7 +136,7 @@
 }
 
 #imageContainer {
-    height: calc(100vh - 600px);
+    height: calc(100vh - 500px);
     overflow-y: auto;
 }
 
@@ -174,7 +174,7 @@
         padding: 0.25em 0.75em;
     }
     #imageContainer {
-        height: calc(100vh - 600px);
+        height: calc(100vh - 550px);
         overflow-y: auto;
     }
 }

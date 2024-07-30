@@ -16,12 +16,6 @@
     #content.fadeOut {
         opacity: 0;
     }
-    .loadingPage {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-    }
 </style>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
@@ -52,8 +46,6 @@
     <h1>PICTURIOO</h1>
     <button id="pageButton" class="defaultButton" style="width: 200px; font-size: 20px; height: auto" onclick="movePage()">추억담기</button>
 </div>
-<%--<div id="loading" class="loadingPage">--%>
-<%--    <h1>기다리세요....</h1>--%>
-<%--</div>--%>
+
 </body>
 </html>
