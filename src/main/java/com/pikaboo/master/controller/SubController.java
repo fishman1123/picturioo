@@ -61,6 +61,7 @@ public class SubController {
                 fileNameWithoutExtension = originalFileName.substring(0, dotIndex);
             }
 
+
             String uuid = UUID.randomUUID().toString();
 
             String newFileName = uuid + "_" + fileNameWithoutExtension + "_" + dateStr + fileExtension;
